@@ -1,0 +1,104 @@
+<div class="container">
+    <div class="panel-group">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Add Resturant Form</div>
+            <div class="panel-body" style="background:#f5f5f5;">
+                <div class="col-md-12">
+                    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate>
+                        <div ng-show="showsuccessmsg" class="alert alert-success">
+                            <strong>Success!</strong> Added Successfully <a href="#" class="alert-link">Go to search resturent page</a>.
+                        </div>
+                        <div ng-show="errormsg" class="alert alert-danger">
+                            <strong>Error</strong>Form not valid<a>Fill the fields correctly</a>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.rest_name.$invalid && !userForm.rest_name.$pristine }">
+                                <label for="resturent_name">RESTURENT NAME</label>
+                                <input type="text" class="form-control" name="rest_name" id="resturent_name" ng-model="resturent_name" placeholder="Enter resturent name..." required>
+                                <p style="color:red" ng-show="userForm.rest_name.$invalid && !userForm.rest_name.$pristine" class="help-block">You name is required.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="resturent_city">CITY</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="resturent_city" placeholder="Search City" id="resturent_city">
+                                <div class="input-group-btn">
+                                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.rest_phone.$invalid && !userForm.rest_phone.$pristine }">
+                                <label for="resturent_phone">PHONE</label>
+                                <input type="text" class="form-control" name="rest_phone" ng-model="resturent_phone" placeholder="Enter Phone Number" id="resturent_phone" ng-minlength="10" ng-maxlength="10" required>
+                                <span style="color:red" class="help-block" ng-show="((userForm.rest_phone.$error.minlength || userForm.rest_phone.$error.maxlength) &&  userForm.rest_phone.$dirty) ">phone number should be 10 digits</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="resturent_name">ADRESS/LANDMARK</label>
+                                <textarea style="height:50px;" placeholder="Default Input" name="rest_adress" class="form-control" id="textarea01" ng-model="resturent_address" required></textarea>
+                                <span style="color:red" ng-show="userForm.rest_adress.$error.required">Enter a valid adress</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="pac-input">SELECT LOCATION FROM MAP</label>
+                            <input id="pac-input" class="form-control" type="text" placeholder="Search Box" ng-keypress="searchTextChange($event)">
+                            <div id="google-maps"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>CUISINES</label>
+                                <ui-select multiple ng-model="ctrl.multipleDemo.cusines" theme="bootstrap" ng-disabled="ctrl.disabled" close-on-select="false" style="width: 300px;" title="Choose a color">
+                                    <ui-select-match placeholder="Select cuisines...">{{$item}}</ui-select-match>
+                                    <ui-select-choices repeat="color in ctrl.availablecusines | filter:$select.search">
+                                        {{color}}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>TAGS</label>
+                                <ui-select multiple ng-model="ctrl.multipleDemo.tags" theme="bootstrap" ng-disabled="ctrl.disabled" close-on-select="false" style="width: 300px;" title="Choose a color">
+                                    <ui-select-match placeholder="Select tags...">{{$item}}</ui-select-match>
+                                    <ui-select-choices repeat="color in ctrl.tags | filter:$select.search">
+                                        {{color}}
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <!--<div class="col-md-4">
+                     <div class="form-group">
+                          <label>Upload Image</label>
+                              <input type="file" ngf-select ng-model="picFile" name="file"
+                                     accept="image/*" ngf-max-size="2MB" required
+                                     ngf-model-invalid="errorFile">
+                              <i ng-show="myForm.file.$error.required">*required</i><b
+                     </div>
+                 </div>--->
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.rest_email.$invalid && !userForm.rest_email.$pristine }">
+                                <label for="resturent_email">RESTURENT EMAIL</label>
+                                <input type="email" class="form-control" name="rest_email" ng-model="resturent_email" id="resturent_email" placeholder="Enter Resturent Email...">
+                                <p style="color:red" ng-show="userForm.rest_email.$invalid && !userForm.rest_email.$pristine" class="help-block">Enter a valid email.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" ng-class="{ 'has-error' : userForm.rest_url.$error.required && !userForm.rest_url.$error.url }">
+                                <label for="resturent_website">RESTURENT WEBSITE</label>
+                                <input type="url" class="form-control" name="rest_url" ng-model="resturent_website" id="resturent_website" placeholder="Enter Resturent website...">
+                                <span style="color:red" ng-show="userForm.rest_url.$error.required">You Can't Leave This Field Empty</span>
+                                <span style="color:red" ng-show="userForm.rest_url.$error.url">Sorry Not a Valid URL, Don't Forget to Use http://</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="submit" ng-disabled="userForm.$invalid" class="btn btn-success btn-block">Add Resturent</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
